@@ -70,3 +70,7 @@ func (repo *SurveyRepository) CreateSurvey(ctx context.Context, survey *domain.S
 
 	return repo.db.Table("surveys").Create(s).Error()
 }
+
+func (repo *SurveyRepository) GetSurvey(ctx context.Context, id string) (*domain.Survey, error) {
+	panic("implement me")
+}

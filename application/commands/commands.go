@@ -13,15 +13,17 @@ type UseCases interface {
 }
 
 type Commands struct {
-	manager       ports.SurveyCreator
-	uuidGenerator ports.UUIDGenerator
-	timeProvider  ports.TimeProvider
+	surveyCreatorProvider         ports.SurveyCreatorProvider
+	surveyResponseCreatorProvider ports.SurveyResponseCreatorProvider
+	uuidGenerator                 ports.UUIDGenerator
+	timeProvider                  ports.TimeProvider
 }
 
-func New(creator ports.SurveyCreator, uuidGenerator ports.UUIDGenerator, timeProvider ports.TimeProvider) *Commands {
+func New(scp ports.SurveyCreatorProvider, scrp ports.SurveyResponseCreatorProvider, uuidGenerator ports.UUIDGenerator, timeProvider ports.TimeProvider) *Commands {
 	return &Commands{
-		manager:       creator,
-		uuidGenerator: uuidGenerator,
-		timeProvider:  timeProvider,
+		surveyCreatorProvider:         scp,
+		surveyResponseCreatorProvider: scrp,
+		uuidGenerator:                 uuidGenerator,
+		timeProvider:                  timeProvider,
 	}
 }

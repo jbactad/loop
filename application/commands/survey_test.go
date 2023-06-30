@@ -22,7 +22,7 @@ func TestCommands_CreateSurvey(t *testing.T) {
 		args    args
 		want    *domain.Survey
 		wantErr assert.ErrorAssertionFunc
-		setup   func(sm *mocks.SurveyCreator, ug *mocks.UUIDGenerator, tp *mocks.TimeProvider)
+		setup   func(sm *mocks.SurveyCreatorProvider, ug *mocks.UUIDGenerator, tp *mocks.TimeProvider)
 	}{
 		{
 			name: "given a valid command, then return a survey",
@@ -34,7 +34,7 @@ func TestCommands_CreateSurvey(t *testing.T) {
 					Question:    "Test Question",
 				},
 			},
-			setup: func(sm *mocks.SurveyCreator, ug *mocks.UUIDGenerator, tp *mocks.TimeProvider) {
+			setup: func(sm *mocks.SurveyCreatorProvider, ug *mocks.UUIDGenerator, tp *mocks.TimeProvider) {
 				uid := "test-uuid"
 				now := time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)
 				ug.EXPECT().Generate().Return(uid).Once()
@@ -92,15 +92,15 @@ func TestCommands_CreateSurvey(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			sm := mocks.NewSurveyCreator(t)
+			scm := mocks.NewSurveyCreatorProvider(t)
 			ug := mocks.NewUUIDGenerator(t)
 			tp := mocks.NewTimeProvider(t)
 
 			if tt.setup != nil {
-				tt.setup(sm, ug, tp)
+				tt.setup(scm, ug, tp)
 			}
 
-			cs := commands.New(sm, ug, tp)
+			cs := commands.New(scm, nil, ug, tp)
 
 			got, err := cs.CreateSurvey(tt.args.ctx, tt.args.cmd)
 			if !tt.wantErr(t, err, "Commands.CreateSurvey() error = %v, wantErr %v", err, tt.wantErr) {

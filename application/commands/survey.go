@@ -34,7 +34,7 @@ func (cs *Commands) CreateSurvey(ctx context.Context, cmd CreateSurveyCommand) (
 
 	s := domain.NewSurvey(id, cmd.Name, cmd.Description, cmd.Question, now, now)
 
-	err := cs.manager.CreateSurvey(ctx, s)
+	err := cs.surveyCreatorProvider.CreateSurvey(ctx, s)
 	if err != nil {
 		return nil, err
 	}

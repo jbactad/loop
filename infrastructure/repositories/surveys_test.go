@@ -144,3 +144,38 @@ func TestSurveyRepository_CreateSurvey(t *testing.T) {
 		})
 	}
 }
+
+func TestSurveyRepository_GetSurvey(t *testing.T) {
+	type args struct {
+		ctx context.Context
+		id  string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    *domain.Survey
+		wantErr bool
+		setup   func(db *mocks.Database)
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			db := mocks.NewDatabase(t)
+			if tt.setup != nil {
+				tt.setup(db)
+			}
+
+			repo := repositories.NewSurveyRepository(db)
+
+			got, err := repo.GetSurvey(tt.args.ctx, tt.args.id)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("SurveyRepository.GetSurvey() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("SurveyRepository.GetSurvey() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

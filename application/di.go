@@ -17,10 +17,11 @@ func ProvideQueryUseCases(injector *do.Injector) {
 
 func ProvideCommandUseCases(injector *do.Injector) {
 	do.Provide(injector, func(i *do.Injector) (commands.UseCases, error) {
-		sc := do.MustInvoke[ports.SurveyCreator](i)
+		scp := do.MustInvoke[ports.SurveyCreatorProvider](i)
+		srcp := do.MustInvoke[ports.SurveyResponseCreatorProvider](i)
 		ug := do.MustInvoke[ports.UUIDGenerator](i)
 		tp := do.MustInvoke[ports.TimeProvider](i)
 
-		return commands.New(sc, ug, tp), nil
+		return commands.New(scp, srcp, ug, tp), nil
 	})
 }
